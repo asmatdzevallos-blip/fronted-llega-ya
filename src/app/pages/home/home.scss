@@ -1,0 +1,117 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; }
+
+/* NAVBAR */
+.navbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 60px; background: white;
+  border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100;
+}
+.navbar-logo { font-size: 1.3rem; font-weight: 800; color: #1a1a1a; }
+.navbar-links { display: flex; gap: 28px;
+  a { text-decoration: none; color: #555; font-size: .9rem;
+      &.active { color: #6fb07f; font-weight: 700; }
+      &:hover { color: #6fb07f; }
+  }
+}
+.navbar-right { display: flex; align-items: center; gap: 12px; }
+.search-bar {
+  display: flex; align-items: center; gap: 8px;
+  background: #f0f0f0; border-radius: 20px; padding: 8px 16px;
+  input { border: none; background: transparent; outline: none;
+          font-size: .85rem; width: 200px; }
+}
+.icon-bell { font-size: 1.2rem; cursor: pointer; }
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: #ccc; display: flex; align-items: center;
+  justify-content: center; font-weight: 700; cursor: pointer;
+  font-size: .9rem;
+  &:hover { background: #bbb; }
+}
+.badge-admin {
+  background: #fde68a; color: #92400e; padding: 4px 12px;
+  border-radius: 20px; font-size: .8rem; font-weight: 700;
+  cursor: pointer;
+  &:hover { background: #fcd34d; }
+}
+
+/* HERO */
+.hero {
+  background: #e8f5e9; padding: 32px 40px; display: flex;
+  flex-direction: column; gap: 16px;
+}
+.hero-location { .label { font-size: .85rem; color: #555; } }
+.address {
+  font-size: 1.6rem; font-weight: 800; color: #1a1a1a;
+  .change { font-size: .85rem; color: #6fb07f; margin-left: 12px;
+            text-decoration: none; font-weight: 400; }
+}
+.hero-search {
+  display: flex; align-items: center; gap: 10px;
+  background: white; border-radius: 30px; padding: 12px 20px;
+  max-width: 600px; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  input { flex: 1; border: none; outline: none; font-size: .95rem; }
+  button {
+    background: #6fb07f; color: white; border: none;
+    padding: 8px 20px; border-radius: 20px; cursor: pointer;
+    font-weight: 600;
+    &:hover { background: #5a9a6a; }
+  }
+}
+
+/* SECCIÓN */
+.section { padding: 32px 40px; }
+.section-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px;
+  h2 { font-size: 1.2rem; font-weight: 700; }
+  a { color: #6fb07f; text-decoration: none; font-size: .9rem; }
+}
+
+/* CATEGORÍAS */
+.categorias { display: flex; gap: 16px; flex-wrap: wrap; }
+.categoria {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background: white; border: 1px solid #eee; border-radius: 12px;
+  padding: 16px 20px; cursor: pointer; min-width: 80px;
+  transition: box-shadow .2s;
+  &:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+  .cat-icon { font-size: 1.8rem; }
+  span { font-size: .8rem; color: #333; }
+}
+
+/* NEGOCIOS */
+.negocios-grid { display: flex; gap: 20px; flex-wrap: wrap; }
+.negocio-card {
+  background: white; border-radius: 14px; width: 200px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.07); overflow: hidden;
+  transition: transform .2s;
+  &:hover { transform: translateY(-4px); }
+}
+.negocio-img {
+  height: 110px; background: #c8e6c9;
+}
+.negocio-info {
+  padding: 12px;
+  strong { font-size: .95rem; display: block; margin-bottom: 4px; }
+  .tipo { font-size: .78rem; color: #888; display: block; margin-bottom: 8px; }
+  .meta { display: flex; justify-content: space-between; font-size: .78rem; color: #555; }
+}
+
+/* BANNER PEDIDO */
+.pedido-banner {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #1a1a1a; color: white;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 40px;
+  .pedido-info { display: flex; flex-direction: column; gap: 4px;
+    span { font-size: .8rem; color: #aaa; }
+    strong { font-size: .95rem; }
+  }
+  button {
+    background: #6fb07f; color: white; border: none;
+    padding: 10px 24px; border-radius: 20px; cursor: pointer; font-weight: 600;
+    &:hover { background: #5a9a6a; }
+  }
+}

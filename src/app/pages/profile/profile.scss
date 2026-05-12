@@ -1,0 +1,43 @@
+.profile-page {
+  min-height: 100vh; background: #f0f4f0;
+  display: flex; align-items: center; justify-content: center;
+}
+.profile-card {
+  background: white; border-radius: 20px; padding: 48px;
+  text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,.1);
+  width: 380px;
+}
+.avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: #6fb07f; color: white; font-size: 2rem;
+  font-weight: 700; display: flex; align-items: center;
+  justify-content: center; margin: 0 auto 16px;
+}
+h2 { font-size: 1.4rem; margin-bottom: 4px; }
+.email { color: #888; font-size: .9rem; margin-bottom: 12px; }
+.badge {
+  padding: 4px 14px; border-radius: 20px;
+  font-size: .8rem; font-weight: 700; text-transform: uppercase;
+}
+.badge-admin      { background: #fde68a; color: #92400e; }
+.badge-cliente    { background: #bbf7d0; color: #065f46; }
+.badge-repartidor { background: #bfdbfe; color: #1e40af; }
+.info-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin: 24px 0;
+}
+.info-item {
+  background: #f9f9f9; border-radius: 10px; padding: 12px;
+  .label { font-size: .75rem; color: #888; display: block; margin-bottom: 4px; }
+}
+.activo   { color: #6fb07f; font-weight: 600; }
+.inactivo { color: #e53935; font-weight: 600; }
+.actions  { display: flex; gap: 12px; justify-content: center; margin-top: 8px; }
+.btn-volver {
+  background: #f0f0f0; color: #333; padding: 10px 20px;
+  border-radius: 10px; text-decoration: none; font-size: .9rem;
+}
+.btn-logout {
+  background: #e53935; color: white; border: none;
+  padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: .9rem;
+}

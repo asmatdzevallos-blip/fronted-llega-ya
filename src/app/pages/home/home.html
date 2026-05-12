@@ -1,0 +1,80 @@
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-logo">LlegaYa</div>
+  <div class="navbar-links">
+    <a routerLink="/home" class="active">Inicio</a>
+    <a href="#">Comercios</a>
+    <a href="#">Pedidos</a>
+    <a href="#">Mi comercio</a>
+    <a href="#">Mi catálogo</a>
+  </div>
+  <div class="navbar-right">
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" placeholder="Buscar productos, comercios..." />
+    </div>
+    <span class="icon-bell">🔔</span>
+    <div class="avatar" (click)="logout()" title="Cerrar sesión">
+      {{ usuario?.nombre?.charAt(0) ?? 'U' }}
+    </div>
+    <span *ngIf="rol === 'admin'" class="badge-admin" (click)="irAdmin()">
+      ⚙️ Admin
+    </span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-location">
+    <span class="label">Te ubicas en</span>
+    <div class="address">
+      Av. Arequipa 1234, Lince
+      <a href="#" class="change">↑ cambiar</a>
+    </div>
+  </div>
+  <div class="hero-search">
+    <span>🔍</span>
+    <input type="text" placeholder="Buscar pollo a la brasa, paracetamol, gaseosa..." />
+    <button>Buscar</button>
+  </div>
+</div>
+
+<!-- CATEGORÍAS -->
+<div class="section">
+  <div class="categorias">
+    <div class="categoria" *ngFor="let cat of categorias">
+      <div class="cat-icon">{{ cat.icono }}</div>
+      <span>{{ cat.nombre }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- NEGOCIOS -->
+<div class="section">
+  <div class="section-header">
+    <h2>Comercios cerca de ti</h2>
+    <a href="#">Ver todo →</a>
+  </div>
+  <div class="negocios-grid">
+    <div class="negocio-card" *ngFor="let n of negocios">
+      <div class="negocio-img"></div>
+      <div class="negocio-info">
+        <strong>{{ n.nombre }}</strong>
+        <span class="tipo">{{ n.tipo }}</span>
+        <div class="meta">
+          <span>⏱ {{ n.tiempo }}</span>
+          <span>⭐ {{ n.rating }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BANNER PEDIDO EN CURSO -->
+<div class="pedido-banner">
+  <div class="pedido-info">
+    <span>Tu pedido en curso</span>
+    <strong>Pollería El Tizón — 2 productos — S/ 41.40</strong>
+  </div>
+  <button>Ir a carrito →</button>
+</div>

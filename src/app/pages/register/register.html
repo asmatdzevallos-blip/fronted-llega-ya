@@ -1,0 +1,58 @@
+<div class="login-container">
+  <div class="left">
+    <div class="brand">LlegaYa<br><span>Perú</span></div>
+    <div class="text">
+      <h2>Pide, vende y crece desde el navegador</h2>
+      <p>LlegaYa, conectando barrios con un solo clic.</p>
+    </div>
+    <div class="categories">
+      <span>🍴 Restaurantes</span>
+      <span>💊 Farmacias</span>
+      <span>🏪 Bodegas</span>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="form-box">
+      <h3>Crear cuenta</h3>
+      <h4>Únete a LlegaYa</h4>
+      <p class="sub">Recibe tus pedidos en minutos.</p>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <input type="text" placeholder="Nombres *" formControlName="nombre" />
+        <div class="error" *ngIf="form.get('nombre')?.touched && form.get('nombre')?.invalid">
+          El nombre es obligatorio
+        </div>
+
+        <input type="text" placeholder="Apellidos *" formControlName="apellido" />
+        <div class="error" *ngIf="form.get('apellido')?.touched && form.get('apellido')?.invalid">
+          El apellido es obligatorio
+        </div>
+
+        <input type="email" placeholder="Correo *" formControlName="email" />
+        <div class="error" *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+          Correo inválido
+        </div>
+
+        <input type="tel" placeholder="Celular" formControlName="telefono" />
+
+        <input type="password" placeholder="Contraseña * (mín. 6 caracteres)"
+               formControlName="password" />
+        <div class="error" *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+          Mínimo 6 caracteres
+        </div>
+
+        <div class="error"  *ngIf="errorMessage">{{ errorMessage }}</div>
+        <div class="exito"  *ngIf="exitoMessage">{{ exitoMessage }}</div>
+
+        <button class="btn-login" type="submit" [disabled]="cargando">
+          {{ cargando ? 'Creando cuenta...' : 'Crear Cuenta' }}
+        </button>
+      </form>
+
+      <div class="register">
+        ¿Ya tienes cuenta? <a routerLink="/">Inicia sesión</a>
+      </div>
+    </div>
+  </div>
+</div>
