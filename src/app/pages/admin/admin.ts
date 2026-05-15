@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast';
 
 @Component({
   selector: 'app-admin',
@@ -17,7 +18,7 @@ export class Admin implements OnInit {
   mensaje = '';
   roles = ['admin', 'cliente', 'repartidor'];
 
-  constructor(private auth: AuthService, private cdr: ChangeDetectorRef) {}
+  constructor(private auth: AuthService, private cdr: ChangeDetectorRef, private toastService: ToastService) {}
 
   ngOnInit() { this.cargarUsuarios(); }
 
@@ -33,16 +34,17 @@ export class Admin implements OnInit {
     const nuevoRol = (event.target as HTMLSelectElement).value;
     this.auth.cambiarRol(usuario.id, nuevoRol).subscribe({
       next: () => {
-        this.mensaje = `✅ Rol de ${usuario.nombre} actualizado a "${nuevoRol}"`;
+        this.toastService.mostrarExito(`Rol de ${usuario.nombre} actualizado a "${nuevoRol}"`);
         if (usuario.rol && usuario.rol.nombre) {
             usuario.rol.nombre = nuevoRol;
         } else { usuario.rol = nuevoRol;}
         this.cdr.detectChanges();
         
-        setTimeout(() => { this.mensaje = ''; this.cdr.detectChanges();}, 3000);
+        setTimeout(() => { this.toastService.mostrarExito('Rol actualizado correctamente.'); this.cdr.detectChanges();}, 3000);
       },
       error: () => { 
-        this.error = 'Error al cambiar rol.'; this.cdr.detectChanges();}
+        this.toastService.mostrarError('Error al cambiar el rol.');
+        this.cdr.detectChanges();}
     });
   }
 
@@ -50,17 +52,17 @@ export class Admin implements OnInit {
     this.auth.cambiarEstado(usuario.id).subscribe({
       next: (res) => {
         usuario.activo = !usuario.activo;
-        this.mensaje = `✅ ${res.mensaje}`;
+        this.toastService.mostrarExito(`✅ ${res.mensaje}`);
         this.cdr.detectChanges();
         
-        setTimeout(() => {this.mensaje = ''; this.cdr.detectChanges(); }, 3000);
+        //setTimeout(() => {this.toastService.mostrarExito(''); this.cdr.detectChanges(); }, 3000);
       },
       
       error: () => {
-        this.error = '❌ Error al comunicarse con la base de datos.';
+        this.toastService.mostrarError('❌ Error al comunicarse con la base de datos.');
         this.cdr.detectChanges();
         
-        setTimeout(() => {this.error = ''; this.cdr.detectChanges(); }, 3000);}
+        setTimeout(() => {this.toastService.mostrarError(''); this.cdr.detectChanges(); }, 3000);}
     });
   }
 

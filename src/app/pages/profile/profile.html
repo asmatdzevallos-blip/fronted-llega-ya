@@ -1,24 +1,271 @@
-<div class="profile-page">
-  <div class="profile-card">
-    <div class="avatar">{{ usuario?.nombre?.charAt(0) ?? 'U' }}</div>
-    <h2>{{ usuario?.nombre }} {{ usuario?.apellido }}</h2>
-    <p class="email">{{ usuario?.email }}</p>
-    <span class="badge" [class]="'badge-' + rol">{{ rol }}</span>
-    <div class="info-grid">
-      <div class="info-item">
-        <span class="label">Teléfono</span>
-        <span>{{ usuario?.telefono || '—' }}</span>
-      </div>
-      <div class="info-item">
-        <span class="label">Estado</span>
-        <span [class]="usuario?.activo ? 'activo' : 'inactivo'">
-          {{ usuario?.activo ? 'Activo' : 'Inactivo' }}
-        </span>
-      </div>
-    </div>
-    <div class="actions">
-      <a routerLink="/home" class="btn-volver">← Volver</a>
-      <button (click)="logout()" class="btn-logout">Cerrar sesión</button>
+<app-navbar></app-navbar>
+
+<main class="profile-page">
+
+  <!-- HERO VERDE -->
+  <div class="profile-hero">
+    <div class="hero-inner">
+      <span class="hero-label">MI CUENTA</span>
+      <h1>Hola, {{ usuario?.nombre }} 👋</h1>
+      <p>Gestiona tus datos, direcciones y conviértete en comercio en LlegaYa.</p>
     </div>
   </div>
-</div>
+
+  <!-- LAYOUT -->
+  <div class="profile-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- Tarjeta usuario -->
+      <div class="user-card">
+        <div class="avatar-big" [class.tiene-foto]="fotoUrl">
+
+          <img *ngIf="fotoUrl" [src]="fotoUrl" alt="Foto de perfil" />
+          <span *ngIf="!fotoUrl">{{ iniciales }}</span>
+
+          <!-- Overlay para cambiar foto -->
+          <label class="foto-overlay" title="Cambiar foto">
+            <span *ngIf="!subiendoFoto">📷</span>
+            <span *ngIf="subiendoFoto">⏳</span>
+            <input
+              type="file"
+              accept="image/*"
+              (change)="seleccionarFoto($event)"
+              style="display:none"
+            />
+          </label>
+        </div>
+        
+        
+        <div class="user-info">
+          <strong>{{ usuario?.nombre }} {{ usuario?.apellido }}</strong>
+          <span class="email">{{ usuario?.email }}</span>
+          <span class="rol-badge">{{ rolLabel }}</span>
+        </div>
+        <button class="btn-outline" (click)="activar('datos'); iniciarEdicion()">
+          Editar Perfil
+        </button>
+      </div>
+
+      <!-- Menú -->
+      <nav class="side-nav">
+        <button [class.activo]="seccionActiva==='datos'"       (click)="activar('datos')">
+          <span>👤</span> Datos Personales
+        </button>
+        <button [class.activo]="seccionActiva==='direcciones'" (click)="activar('direcciones')">
+          <span>📍</span> Direcciones
+        </button>
+        <button [class.activo]="seccionActiva==='pagos'"       (click)="activar('pagos')">
+          <span>💳</span> Pagos
+        </button>
+        <button [class.activo]="seccionActiva==='pedidos'"     (click)="activar('pedidos')">
+          <span>📦</span> Pedidos
+        </button>
+        <button [class.activo]="seccionActiva==='comercio'"    (click)="activar('comercio')">
+          <span>🏪</span> Mi comercio
+        </button>
+        <button [class.activo]="seccionActiva==='config'"      (click)="activar('config')">
+          <span>⚙️</span> Configuración
+        </button>
+      </nav>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <section class="profile-content">
+
+      <!-- ── Banner comercio ── -->
+      <div class="banner-comercio">
+        <div class="banner-icon">🏪</div>
+        <div class="banner-text">
+          <strong>¿Tienes un comercio?</strong>
+          <p>Vende en LlegaYa con tu RUC. Configura horarios, catálogo y empieza a recibir pedidos en minutos.</p>
+        </div>
+        <button class="btn-dark">Registrar comercio</button>
+      </div>
+
+      <!-- ── Stats ── -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-num">12</span>
+          <span class="stat-label">PEDIDOS ESTE MES</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">S/ 486</span>
+          <span class="stat-label">GASTOS DEL MES</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">4.9</span>
+          <span class="stat-label">TU CALIFICACIÓN</span>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════ -->
+      <!-- SECCIÓN: DATOS PERSONALES     -->
+      <!-- ══════════════════════════════ -->
+      <div class="card" *ngIf="seccionActiva === 'datos'">
+        <div class="card-header">
+          <h3>Datos Personales</h3>
+          <button class="btn-link" *ngIf="!editando" (click)="iniciarEdicion()">Editar</button>
+        </div>
+
+        <!-- Vista lectura -->
+        <div class="datos-grid" *ngIf="!editando">
+          <div class="dato">
+            <label>NOMBRE</label>
+            <span>{{ usuario?.nombre }}</span>
+          </div>
+          <div class="dato">
+            <label>APELLIDO</label>
+            <span>{{ usuario?.apellido }}</span>
+          </div>
+          <div class="dato">
+            <label>CORREO</label>
+            <span>{{ usuario?.email }}</span>
+          </div>
+          <div class="dato">
+            <label>CELULAR</label>
+            <span>{{ usuario?.telefono || '—' }}</span>
+          </div>
+          <div class="dato">
+            <label>ROL</label>
+            <span>{{ rolLabel }}</span>
+          </div>
+        </div>
+
+        <!-- Formulario edición -->
+        <form [formGroup]="editForm" (ngSubmit)="guardarPerfil()" *ngIf="editando">
+          <div class="datos-grid">
+            <div class="campo">
+              <label>NOMBRE *</label>
+              <input type="text" formControlName="nombre" placeholder="Tu nombre" />
+            </div>
+            <div class="campo">
+              <label>APELLIDO *</label>
+              <input type="text" formControlName="apellido" placeholder="Tu apellido" />
+            </div>
+            <div class="campo">
+              <label>CORREO</label>
+              <input type="email" [value]="usuario?.email" disabled />
+            </div>
+            <div class="campo">
+              <label>CELULAR</label>
+              <input type="tel" formControlName="telefono" placeholder="987 654 321" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-outline" (click)="cancelarEdicion()">Cancelar</button>
+            <button type="submit" class="btn-green" [disabled]="guardando || editForm.invalid">
+              {{ guardando ? 'Guardando...' : 'Guardar cambios' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ══════════════════════════════ -->
+      <!-- SECCIÓN: PEDIDOS RECIENTES    -->
+      <!-- ══════════════════════════════ -->
+      <div class="card" *ngIf="seccionActiva === 'pedidos'">
+        <div class="card-header">
+          <h3>Pedidos Recientes</h3>
+          <button class="btn-link">Ver todos</button>
+        </div>
+        <table class="tabla-pedidos">
+          <thead>
+            <tr>
+              <th>PEDIDO</th>
+              <th>COMERCIO</th>
+              <th>TOTAL</th>
+              <th>ESTADO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#LY-2041</td>
+              <td>Botica San Martín</td>
+              <td>S/ 38.50</td>
+              <td><span class="estado entregado">Entregado</span></td>
+            </tr>
+            <tr>
+              <td>#LY-2039</td>
+              <td>Mercado Surquillo</td>
+              <td>S/ 72.10</td>
+              <td><span class="estado entregado">Entregado</span></td>
+            </tr>
+            <tr>
+              <td>#LY-2035</td>
+              <td>Don Pollo Lince</td>
+              <td>S/ 26.00</td>
+              <td><span class="estado entregado">Entregado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ══════════════════════════════ -->
+      <!-- SECCIÓN: OTRAS               -->
+      <!-- ══════════════════════════════ -->
+      <div class="card placeholder-card"
+           *ngIf="seccionActiva === 'direcciones' ||
+                  seccionActiva === 'pagos'       ||
+                  seccionActiva === 'comercio'    ||
+                  seccionActiva === 'config'">
+        <div class="card-header"><h3>{{ seccionActiva | titlecase }}</h3></div>
+        <p class="placeholder-text">Esta sección estará disponible próximamente. 🚧</p>
+      </div>
+
+      <!-- ══════════════════════════════ -->
+      <!-- ACCESOS RÁPIDOS              -->
+      <!-- ══════════════════════════════ -->
+      <div class="quick-links">
+        <div class="ql-item" (click)="activar('direcciones')">
+          <span class="ql-icon">📍</span>
+          <div>
+            <strong>Direcciones</strong>
+            <small>Av. Arequipa 1234, Lince &nbsp;+2 más</small>
+          </div>
+          <span class="ql-arrow">›</span>
+        </div>
+        <div class="ql-item" (click)="activar('pagos')">
+          <span class="ql-icon">💳</span>
+          <div>
+            <strong>Métodos de pago</strong>
+            <small>Visa ···4321 &nbsp;Yape</small>
+          </div>
+          <span class="ql-arrow">›</span>
+        </div>
+        <div class="ql-item" (click)="activar('pedidos')">
+          <span class="ql-icon">📦</span>
+          <div>
+            <strong>Historial de pedidos</strong>
+            <small>12 pedidos este mes</small>
+          </div>
+          <span class="ql-arrow">›</span>
+        </div>
+        <div class="ql-item" (click)="activar('config')">
+          <span class="ql-icon">⚙️</span>
+          <div>
+            <strong>Configuración</strong>
+            <small>Notificaciones, idioma, privacidad</small>
+          </div>
+          <span class="ql-arrow">›</span>
+        </div>
+        <div class="ql-item" (click)="activar('comercio')">
+          <span class="ql-icon">❓</span>
+          <div>
+            <strong>Ayuda y soporte</strong>
+            <small>Centro de atención 24/7</small>
+          </div>
+          <span class="ql-arrow">›</span>
+        </div>
+      </div>
+
+      <!-- CERRAR SESIÓN -->
+      <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
+
+    </section>
+  </div>
+</main>
+
+<app-footer></app-footer>
