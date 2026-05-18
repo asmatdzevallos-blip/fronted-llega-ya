@@ -2,11 +2,18 @@
   <div class="navbar-logo" routerLink="/home">LlegaYa</div>
 
   <div class="navbar-links">
-    <a routerLink="/home"     routerLinkActive="active">Inicio</a>
+    <a routerLink="/home" routerLinkActive="active">Inicio</a>
     <a routerLink="/comercios" routerLinkActive="active">Comercios</a>
-    <a routerLink="/pedidos"   routerLinkActive="active">Pedidos</a>
-    <a routerLink="/negocio"   routerLinkActive="active">Mi comercio</a>
-    <a routerLink="/catalogo"  routerLinkActive="active">Mi catálogo</a>
+    <a routerLink="/pedidos" routerLinkActive="active">Pedidos</a>
+
+    <!-- Solo si tiene negocio registrado -->
+    <a *ngIf="tieneNegocio"
+       routerLink="/mi-comercio"
+       routerLinkActive="active">Mi comercio</a>
+
+    <a *ngIf="tieneNegocio"
+       routerLink="/mi-catalogo"
+       routerLinkActive="active">Mi catálogo</a>
   </div>
 
   <div class="navbar-right">
@@ -17,12 +24,10 @@
 
     <span class="icon-bell">🔔</span>
 
-    <!-- Avatar → va al perfil -->
     <div class="avatar" (click)="irPerfil()" title="Mi perfil">
       {{ usuario?.nombre?.charAt(0)?.toUpperCase() ?? 'U' }}
     </div>
 
-    <!-- Badge admin -->
     <span *ngIf="rol === 'admin'" class="badge-admin" (click)="irAdmin()">
       ⚙️ Admin
     </span>

@@ -1,0 +1,274 @@
+<app-navbar></app-navbar>
+
+<div class="mc-page">
+
+  <!-- ══ LOADING ══════════════════════════════════════ -->
+  <div class="mc-loading" *ngIf="cargando">
+    <div class="spinner"></div>
+    <p>Cargando tu comercio...</p>
+  </div>
+
+  <!-- ══ SIN NEGOCIO ══════════════════════════════════ -->
+  <div class="sin-negocio" *ngIf="!cargando && !negocio">
+    <div class="sn-inner">
+      <div class="sn-icon">🏪</div>
+      <h2>Aún no tienes un comercio registrado</h2>
+      <p>Regístralo en minutos y empieza a recibir pedidos en LlegaYa.</p>
+      <button class="btn-green" (click)="irARegistro()">
+        + Registrar mi comercio
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ CON NEGOCIO ══════════════════════════════════ -->
+  <ng-container *ngIf="!cargando && negocio">
+
+    <!-- HERO -->
+    <div class="mc-hero">
+      <div class="mc-hero-inner">
+        <div class="mc-hero-info">
+          <div class="mc-avatar">{{ negocio.nombre.charAt(0) }}</div>
+          <div>
+            <p class="mc-eyebrow">MI COMERCIO</p>
+            <h1>{{ negocio.nombre }}</h1>
+            <div class="mc-meta">
+              <span class="badge-cat">{{ categoriaLabel }}</span>
+              <span class="badge-activo" [class.inactivo]="!negocio.activo">
+                {{ negocio.activo ? '● Activo' : '● Inactivo' }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <button class="btn-catalogo" (click)="irACatalogo()">
+          📦 Gestionar catálogo →
+        </button>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="mc-body">
+
+      <div class="tabs">
+        <button [class.activo]="tabActiva==='resumen'"  (click)="activarTab('resumen')">
+          📊 Resumen
+        </button>
+        <button [class.activo]="tabActiva==='pedidos'"  (click)="activarTab('pedidos')">
+          🛒 Pedidos
+          <span class="tab-badge" *ngIf="pedidos.length">{{ pedidos.length }}</span>
+        </button>
+        <button [class.activo]="tabActiva==='info'"     (click)="activarTab('info')">
+          ⚙️ Info del negocio
+        </button>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- TAB: RESUMEN                                 -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="tab-content" *ngIf="tabActiva === 'resumen'">
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-ico">🛒</span>
+            <span class="stat-num">{{ pedidos.length }}</span>
+            <span class="stat-lbl">PEDIDOS TOTALES</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-ico">✅</span>
+            <span class="stat-num">
+              {{ pedidos.length }}
+            </span>
+            <span class="stat-lbl">ENTREGADOS</span>
+          </div>
+          <div class="stat-card accent">
+            <span class="stat-ico">📍</span>
+            <span class="stat-num truncate">{{ negocio.direccion }}</span>
+            <span class="stat-lbl">DIRECCIÓN DE RECOJO</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-ico">🕐</span>
+            <span class="stat-num">
+              {{ negocio.hora_apertura || '--' }} – {{ negocio.hora_cierre || '--' }}
+            </span>
+            <span class="stat-lbl">HORARIO</span>
+          </div>
+        </div>
+
+        <!-- Días de atención -->
+        <div class="card" *ngIf="negocio.dias_atencion.length">
+          <h3>Días de atención</h3>
+          <div class="dias-row">
+            <span *ngFor="let d of dias"
+                  class="dia-chip"
+                  [class.activo]="negocio.dias_atencion.includes(d)">
+              {{ diasLabels[d] }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="card" *ngIf="negocio.descripcion">
+          <h3>Descripción</h3>
+          <p class="descripcion-txt">{{ negocio.descripcion }}</p>
+        </div>
+
+        <!-- Acceso rápido catálogo -->
+        <div class="card cta-catalogo" (click)="irACatalogo()">
+          <div class="cta-left">
+            <span class="cta-ico">📦</span>
+            <div>
+              <strong>Gestiona tu catálogo</strong>
+              <small>Agrega, edita y activa/desactiva tus productos</small>
+            </div>
+          </div>
+          <span class="cta-arrow">›</span>
+        </div>
+
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- TAB: PEDIDOS                                 -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="tab-content" *ngIf="tabActiva === 'pedidos'">
+
+        <div class="empty-state" *ngIf="pedidos.length === 0">
+          <span>📭</span>
+          <p>Aún no tienes pedidos recibidos</p>
+        </div>
+
+        <div class="card" *ngIf="pedidos.length > 0">
+          <table class="tabla-pedidos">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>CLIENTE</th>
+                <th>TOTAL</th>
+                <th>DIRECCIÓN</th>
+                <th>ESTADO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of pedidos">
+                <td><strong>#{{ p.id }}</strong></td>
+                <td>{{ p.cliente?.nombre }} {{ p.cliente?.apellido }}</td>
+                <td>S/ {{ p.total }}</td>
+                <td>{{ p.direccion_entrega }}</td>
+                <td>
+                  <span class="estado-badge" [ngClass]="estadoClass(p.estado)">
+                    {{ p.estado }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- TAB: INFO DEL NEGOCIO                        -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="tab-content" *ngIf="tabActiva === 'info'">
+
+        <!-- Vista lectura -->
+        <div class="card" *ngIf="!editando">
+          <div class="card-header">
+            <h3>Información del negocio</h3>
+            <div class="header-actions">
+              <span class="msg-ok" *ngIf="editOk">{{ editOk }}</span>
+              <button class="btn-link" (click)="iniciarEdicion()">Editar</button>
+            </div>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <label>NOMBRE COMERCIAL</label>
+              <span>{{ negocio.nombre }}</span>
+            </div>
+            <div class="info-item">
+              <label>CATEGORÍA</label>
+              <span>{{ categoriaLabel }}</span>
+            </div>
+            <div class="info-item">
+              <label>RUC</label>
+              <span>{{ negocio.ruc || '—' }}</span>
+            </div>
+            <div class="info-item">
+              <label>RAZÓN SOCIAL</label>
+              <span>{{ negocio.razon_social || '—' }}</span>
+            </div>
+            <div class="info-item full">
+              <label>DIRECCIÓN</label>
+              <span>{{ negocio.direccion }}</span>
+            </div>
+            <div class="info-item">
+              <label>TELÉFONO</label>
+              <span>{{ negocio.telefono || '—' }}</span>
+            </div>
+            <div class="info-item">
+              <label>HORARIO</label>
+              <span>{{ negocio.hora_apertura || '--' }} – {{ negocio.hora_cierre || '--' }}
+              </span>
+            </div>
+            <div class="info-item full">
+              <label>DESCRIPCIÓN</label>
+              <span>{{ negocio.descripcion || '—' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario edición -->
+        <div class="card" *ngIf="editando">
+          <div class="card-header">
+            <h3>Editar información</h3>
+          </div>
+
+          <form [formGroup]="editForm" class="edit-grid">
+            <div class="campo">
+              <label>NOMBRE COMERCIAL *</label>
+              <input type="text" formControlName="nombre" />
+            </div>
+            <div class="campo">
+              <label>CATEGORÍA *</label>
+              <select formControlName="categoria">
+                <option *ngFor="let r of rubros" [value]="r.valor">{{ r.label }}</option>
+              </select>
+            </div>
+            <div class="campo full">
+              <label>DIRECCIÓN *</label>
+              <input type="text" formControlName="direccion" />
+            </div>
+            <div class="campo">
+              <label>TELÉFONO</label>
+              <input type="tel" formControlName="telefono" />
+            </div>
+            <div class="campo">
+              <label>HORA APERTURA</label>
+              <input type="time" formControlName="hora_apertura" />
+            </div>
+            <div class="campo">
+              <label>HORA CIERRE</label>
+              <input type="time" formControlName="hora_cierre" />
+            </div>
+            <div class="campo full">
+              <label>DESCRIPCIÓN</label>
+              <textarea formControlName="descripcion" rows="3"></textarea>
+            </div>
+          </form>
+
+          <div class="error-msg" *ngIf="editError">{{ editError }}</div>
+
+          <div class="form-actions">
+            <button class="btn-outline" (click)="cancelarEdicion()">Cancelar</button>
+            <button class="btn-green" (click)="guardar()" [disabled]="guardando">
+              {{ guardando ? 'Guardando...' : 'Guardar cambios' }}
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </ng-container>
+
+</div>
+
+<app-footer></app-footer>

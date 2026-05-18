@@ -16,7 +16,7 @@ export class ToastComponent implements OnInit, OnDestroy {
 
   constructor(
     private toastService: ToastService,
-    private cdr: ChangeDetectorRef // ¡Nuestro viejo amigo para forzar la vista!
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {

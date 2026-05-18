@@ -5,6 +5,7 @@ import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { Home } from './pages/home/home';
 import { Profile } from './pages/profile/profile';
+import { MiComercio } from './pages/mi-comercio/mi-comercio';
 
 export const routes: Routes = [
   { path: '', component: Login },
@@ -20,10 +21,23 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'comercio/registro',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/comercio-registro/comercio-registro')
+        .then(m => m.ComercioRegistro)
+  },
+  {
+  path: 'mi-comercio',
+  component: MiComercio,
+  canActivate: [authGuard]
+  },
+  {
     path: 'admin',
     canActivate: [authGuard, adminGuard],
     loadComponent: () =>
       import('./pages/admin/admin').then(m => m.Admin)
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
+
 ];

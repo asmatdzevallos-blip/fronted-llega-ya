@@ -1,0 +1,439 @@
+@use 'sass:color';
+$verde:     #6fb07f;
+$verde-cl:  #6fb07f;
+$verde-bg:  #e8f5e9;
+$bg:        #f4f6f4;
+$card:      #ffffff;
+$border:    #e0e0e0;
+$txt:       #1a1a1a;
+$txt-light: #777;
+$radius:    16px;
+
+.mc-page {
+  background: $bg;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+// ── Loading ──────────────────────────────────────────
+.mc-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+  color: $txt-light;
+
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid $border;
+    border-top-color: $verde;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+// ── Sin negocio ──────────────────────────────────────
+.sin-negocio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+
+  .sn-inner {
+    text-align: center;
+    max-width: 400px;
+    padding: 40px;
+    background: $card;
+    border-radius: 24px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.07);
+
+    .sn-icon { font-size: 3.5rem; margin-bottom: 16px; }
+    h2 { font-size: 1.3rem; font-weight: 800; margin: 0 0 10px; }
+    p  { color: $txt-light; font-size: .9rem; margin: 0 0 24px; }
+  }
+}
+
+// ── Hero ─────────────────────────────────────────────
+.mc-hero {
+  background: $verde;
+  color: #fff;
+  padding: 36px 40px 52px;
+
+  &-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  &-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+.mc-avatar {
+  width: 64px; height: 64px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.2);
+  border: 2px solid rgba(255,255,255,.4);
+  font-size: 1.8rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mc-eyebrow {
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .15em;
+  opacity: .65;
+  margin: 0 0 4px;
+}
+
+h1 { font-size: 1.8rem; font-weight: 900; margin: 0 0 8px; }
+
+.mc-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.badge-cat {
+  background: rgba(255,255,255,.2);
+  border: 1px solid rgba(255,255,255,.3);
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: .78rem;
+  font-weight: 600;
+}
+
+.badge-activo {
+  background: #a5d6a7;
+  color: #1b5e20;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: .78rem;
+  font-weight: 700;
+  &.inactivo { background: #ffcdd2; color: #b71c1c; }
+}
+
+.btn-catalogo {
+  background: rgba(255,255,255,.15);
+  border: 1.5px solid rgba(255,255,255,.4);
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .2s;
+  &:hover { background: rgba(255,255,255,.25); }
+}
+
+// ── Body ─────────────────────────────────────────────
+.mc-body {
+  max-width: 1000px;
+  margin: -24px auto 0;
+  padding: 0 24px;
+}
+
+// ── Tabs ─────────────────────────────────────────────
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: $card;
+  border-radius: $radius;
+  padding: 6px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+
+  button {
+    flex: 1;
+    border: none;
+    background: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: .88rem;
+    font-weight: 600;
+    color: $txt-light;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    &:hover  { background: $verde-bg; color: $verde; }
+    &.activo { background: $verde; color: #fff; }
+  }
+}
+
+.tab-badge {
+  background: #fff;
+  color: $verde;
+  font-size: .7rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 10px;
+  .activo & { background: rgba(255,255,255,.3); color: #fff; }
+}
+
+// ── Tab content ──────────────────────────────────────
+.tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn .25s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+
+// ── Stats grid ───────────────────────────────────────
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.stat-card {
+  background: $card;
+  border-radius: $radius;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  text-align: center;
+
+  .stat-ico { font-size: 1.4rem; }
+  .stat-num { font-size: 1.4rem; font-weight: 800; color: $verde; }
+  .stat-lbl { font-size: .62rem; font-weight: 700; color: $txt-light; letter-spacing: .08em; }
+  .truncate { font-size: .85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  &.accent { background: $verde-bg; }
+}
+
+// ── Card ─────────────────────────────────────────────
+.card {
+  background: $card;
+  border-radius: $radius;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+
+  h3 { font-size: 1rem; font-weight: 700; margin: 0 0 16px; }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    h3 { margin: 0; }
+  }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+// ── Días ─────────────────────────────────────────────
+.dias-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dia-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: .8rem;
+  font-weight: 700;
+  background: #f0f0f0;
+  color: $txt-light;
+
+  &.activo { background: $verde; color: #fff; }
+}
+
+.descripcion-txt {
+  color: $txt-light;
+  font-size: .9rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+// ── CTA catálogo ─────────────────────────────────────
+.cta-catalogo {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background .2s;
+  &:hover { background: $verde-bg; }
+
+  .cta-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    .cta-ico { font-size: 1.5rem; }
+    strong { display: block; font-size: .92rem; }
+    small  { color: $txt-light; font-size: .8rem; }
+  }
+
+  .cta-arrow { font-size: 1.4rem; color: $txt-light; }
+}
+
+// ── Tabla pedidos ─────────────────────────────────────
+.tabla-pedidos {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .88rem;
+
+  th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: .65rem;
+    font-weight: 700;
+    color: $txt-light;
+    letter-spacing: .08em;
+    border-bottom: 1px solid $border;
+  }
+  td {
+    padding: 12px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  tr:last-child td { border-bottom: none; }
+}
+
+.estado-badge {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: .75rem;
+  font-weight: 700;
+  &.estado-pendiente  { background: #fff3e0; color: #e65100; }
+  &.estado-confirmado { background: #e3f2fd; color: #1565c0; }
+  &.estado-camino     { background: #f3e5f5; color: #7b1fa2; }
+  &.estado-entregado  { background: $verde-bg; color: $verde; }
+}
+
+// ── Info grid ────────────────────────────────────────
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.info-item {
+  background: #f7f7f7;
+  border-radius: 10px;
+  padding: 12px 16px;
+  &.full { grid-column: 1 / -1; }
+
+  label { font-size: .65rem; font-weight: 700; color: $txt-light; letter-spacing: .08em; display: block; margin-bottom: 4px; }
+  span  { font-size: .9rem; color: $txt; }
+}
+
+// ── Edit form ────────────────────────────────────────
+.edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  &.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: .65rem;
+    font-weight: 700;
+    color: $txt-light;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  input, select, textarea {
+    border: 1.5px solid $border;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: .9rem;
+    outline: none;
+    font-family: inherit;
+    transition: border .2s;
+    background: #fafafa;
+    &:focus { border-color: $verde-cl; background: #fff; }
+  }
+
+  textarea { resize: vertical; }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+// ── Empty state ──────────────────────────────────────
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: $txt-light;
+  span { font-size: 3rem; display: block; margin-bottom: 12px; }
+  p    { font-size: .9rem; }
+}
+
+// ── Botones ──────────────────────────────────────────
+.btn-green {
+  background: $verde;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 24px;
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  &:hover    { background: color.adjust($verde, $lightness: -6%); }
+  &:disabled { opacity: .5; cursor: not-allowed; }
+}
+
+.btn-outline {
+  background: none;
+  border: 1.5px solid $border;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: .88rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: $txt-light;
+  transition: all .2s;
+  &:hover { border-color: $verde; color: $verde; }
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: $verde;
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+  &:hover { text-decoration: underline; }
+}
+
+.msg-ok    { color: $verde;  font-size: .82rem; font-weight: 600; }
+.error-msg { color: #c62828; font-size: .82rem; font-weight: 600; margin-top: 8px; }
