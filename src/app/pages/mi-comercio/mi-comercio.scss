@@ -139,6 +139,9 @@ h1 { font-size: 1.8rem; font-weight: 900; margin: 0 0 8px; }
   cursor: pointer;
   white-space: nowrap;
   transition: all .2s;
+  text-decoration: none;
+  color: #fff;
+  display: inline-block;
   &:hover { background: rgba(255,255,255,.25); }
 }
 

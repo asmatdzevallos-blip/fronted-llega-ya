@@ -32,6 +32,10 @@ export class NegocioService {
 
   // Llama al backend y cachea el resultado
   cargar(): Observable<Negocio | null> {
+    if (this.cargado) {
+    return of(this.negocioSubject.value);
+    }
+    
     return this.http.get<Negocio>(`${this.api}/negocio/`).pipe(
       tap(n => {
         this.negocioSubject.next(n);

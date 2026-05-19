@@ -63,4 +63,14 @@ export class AuthService {
     return this.http.put<any>(`${this.api}/admin/usuarios/${id}/estado/`, {});
   }
   
+  requestPasswordReset(email: string) {
+    return this.http.post<any>(`${this.api}/password-reset-request/`, { email });
+  }
+
+  confirmPasswordReset(token: string, newPassword: string) {
+    return this.http.post<any>(`${this.api}/password-reset-confirm/`, {
+      token,
+      new_password: newPassword
+    });
+  }
 }
