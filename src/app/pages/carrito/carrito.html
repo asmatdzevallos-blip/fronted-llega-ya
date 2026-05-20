@@ -1,0 +1,116 @@
+<app-navbar></app-navbar>
+
+<div class="carrito-page">
+
+  <!-- ══ HERO ════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">MI CARRITO</p>
+        <h1>Revisa tu pedido 🛒</h1>
+        <p class="sub">{{ totalItems }} producto(s) de {{ negocioKeys.length }} comercio(s)</p>
+      </div>
+      <button class="btn-outline-white" (click)="irAComercio()">
+        + Agregar más productos
+      </button>
+    </div>
+  </div>
+
+  <div class="carrito-body">
+
+    <!-- ══ PEDIDO CONFIRMADO ════════════════════════ -->
+    <div class="confirmado-card" *ngIf="pedidoOk">
+      <span class="confirmado-ico">✅</span>
+      <h2>¡Pedido confirmado!</h2>
+      <p>Tus pedidos fueron registrados correctamente. Puedes seguir el estado desde la sección de pedidos.</p>
+      <button class="btn-green" (click)="irAPedidos()">Ver mis pedidos →</button>
+    </div>
+
+    <!-- ══ CARRITO VACÍO ════════════════════════════ -->
+    <div class="vacio-card" *ngIf="!pedidoOk && items.length === 0">
+      <span>🛒</span>
+      <h2>Tu carrito está vacío</h2>
+      <p>Explora los comercios y agrega productos</p>
+      <button class="btn-green" (click)="irAComercio()">Ver comercios</button>
+    </div>
+
+    <!-- ══ CONTENIDO CARRITO ════════════════════════ -->
+    <div class="carrito-layout" *ngIf="!pedidoOk && items.length > 0">
+
+      <!-- IZQUIERDA: items agrupados por negocio -->
+      <div class="carrito-items">
+
+        <div class="negocio-grupo" *ngFor="let key of negocioKeys">
+          <div class="grupo-header">
+            <span>🏪</span>
+            <strong>{{ nombreNegocio(key) }}</strong>
+            <span class="subtotal">S/ {{ subtotalNegocio(porNegocio[key]).toFixed(2) }}</span>
+          </div>
+
+          <div class="item-row" *ngFor="let item of porNegocio[key]">
+            <div class="item-info">
+              <strong>{{ item.nombre }}</strong>
+              <span>S/ {{ item.precio }} c/u</span>
+            </div>
+            <div class="item-acciones">
+              <input type="number" min="1" max="99"
+                     [value]="item.cantidad"
+                     (change)="actualizar(item.producto_id, $event)" />
+              <span class="item-total">S/ {{ (item.precio * item.cantidad).toFixed(2) }}</span>
+              <button class="btn-eliminar" (click)="eliminar(item.producto_id)">🗑️</button>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-limpiar" (click)="limpiarCarrito()">
+          🗑️ Vaciar carrito
+        </button>
+      </div>
+
+      <!-- DERECHA: resumen y confirmar -->
+      <div class="carrito-resumen">
+        <div class="resumen-card">
+          <h3>Resumen del pedido</h3>
+
+          <div class="resumen-linea" *ngFor="let key of negocioKeys">
+            <span>{{ nombreNegocio(key) }}</span>
+            <span>S/ {{ subtotalNegocio(porNegocio[key]).toFixed(2) }}</span>
+          </div>
+
+          <div class="resumen-linea envio">
+            <span>Tarifa de envío</span>
+            <span>Por calcular</span>
+          </div>
+
+          <div class="resumen-total">
+            <span>Total productos</span>
+            <strong>S/ {{ totalGeneral.toFixed(2) }}</strong>
+          </div>
+
+          <!-- Dirección -->
+          <div class="direccion-campo">
+            <label>📍 Dirección de entrega *</label>
+            <input type="text"
+                   [(ngModel)]="direccion"
+                   placeholder="Ej: Av. Arequipa 1234, Lince" />
+          </div>
+
+          <div class="error-msg" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+          <button class="btn-confirmar"
+                  (click)="confirmarPedido()"
+                  [disabled]="confirmando || !direccion.trim()">
+            {{ confirmando ? 'Confirmando...' : '✅ Confirmar pedido' }}
+          </button>
+
+          <p class="resumen-nota">
+            Se crearán {{ negocioKeys.length }} pedido(s) separado(s), uno por cada comercio.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

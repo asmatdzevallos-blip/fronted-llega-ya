@@ -1,0 +1,133 @@
+<app-navbar></app-navbar>
+
+<div class="comercios-page">
+
+  <!-- ══ HERO ════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">COMERCIOS</p>
+        <h1>¿Qué se te antoja hoy?</h1>
+        <p class="sub">Elige un comercio y agrega productos a tu carrito</p>
+      </div>
+
+      <!-- Botón carrito flotante -->
+      <button class="btn-carrito" (click)="irAlCarrito()" *ngIf="totalItemsCarrito > 0">
+        🛒 Ver carrito
+        <span class="carrito-badge">{{ totalItemsCarrito }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ LISTA DE NEGOCIOS ════════════════════════════ -->
+  <div class="content" *ngIf="!negocioActivo">
+
+    <!-- Filtros -->
+    <div class="filtros">
+      <div class="search-wrap">
+        <span>🔍</span>
+        <input type="text" placeholder="Buscar comercios..."
+               (input)="onFiltroTexto($event)" />
+      </div>
+      <div class="categorias-row">
+        <button *ngFor="let c of categorias"
+                class="cat-btn"
+                [class.activo]="filtroCategoria === c.valor"
+                (click)="onFiltroCategoria(c.valor)">
+          {{ c.label }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-box" *ngIf="cargando">
+      <div class="spinner"></div>
+      <span>Cargando comercios...</span>
+    </div>
+
+    <!-- Grid negocios -->
+    <div class="negocios-grid" *ngIf="!cargando">
+      <div class="negocio-card" *ngFor="let n of negociosFiltrados"
+           (click)="seleccionarNegocio(n)">
+        <div class="negocio-avatar">{{ categoriaIcono(n.categoria) }}</div>
+        <div class="negocio-info">
+          <strong>{{ n.nombre }}</strong>
+          <span class="negocio-cat">{{ n.categoria }}</span>
+          <span class="negocio-dir">📍 {{ n.direccion }}</span>
+        </div>
+        <span class="negocio-arrow">›</span>
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="negociosFiltrados.length === 0">
+        <span>🔍</span>
+        <p>No se encontraron comercios</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ PRODUCTOS DEL NEGOCIO ════════════════════════ -->
+  <div class="content" *ngIf="negocioActivo">
+
+    <!-- Header negocio -->
+    <div class="negocio-header">
+      <button class="btn-volver" (click)="volverALista()">← Volver</button>
+      <div class="negocio-header-info">
+        <span class="negocio-header-icon">{{ categoriaIcono(negocioActivo.categoria) }}</span>
+        <div>
+          <h2>{{ negocioActivo.nombre }}</h2>
+          <span>📍 {{ negocioActivo.direccion }}</span>
+        </div>
+      </div>
+
+      <button class="btn-carrito" (click)="irAlCarrito()" *ngIf="totalItemsCarrito > 0">
+        🛒 Ver carrito
+        <span class="carrito-badge">{{ totalItemsCarrito }}</span>
+      </button>
+    </div>
+
+    <!-- Loading productos -->
+    <div class="loading-box" *ngIf="cargandoProds">
+      <div class="spinner"></div>
+      <span>Cargando productos...</span>
+    </div>
+
+    <!-- Grid productos -->
+    <div class="productos-grid" *ngIf="!cargandoProds">
+      <div class="producto-card" *ngFor="let p of productos">
+        <div class="producto-info">
+          <strong>{{ p.nombre }}</strong>
+          <span class="producto-desc">{{ p.descripcion }}</span>
+          <span class="producto-cat">{{ p.categoria }}</span>
+          <span class="producto-precio">S/ {{ p.precio }}</span>
+        </div>
+
+        <div class="producto-acciones">
+          <!-- Selector cantidad -->
+          <div class="cantidad-ctrl">
+            <button (click)="decrementar(p.id)">−</button>
+            <span>{{ cantidadesSeleccionadas[p.id] || 0 }}</span>
+            <button (click)="incrementar(p.id)">+</button>
+          </div>
+          <!-- Agregar al carrito -->
+          <button class="btn-agregar"
+                  [disabled]="(cantidadesSeleccionadas[p.id] || 0) === 0"
+                  (click)="agregarAlCarrito(p)">
+            Agregar
+          </button>
+        </div>
+      </div>
+
+      <!-- Empty -->
+      <div class="empty-state" *ngIf="productos.length === 0">
+        <span>📦</span>
+        <p>Este comercio no tiene productos disponibles</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<app-footer></app-footer>

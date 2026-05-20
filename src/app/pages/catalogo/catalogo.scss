@@ -27,7 +27,9 @@ $info:        #4a90d9;
 .catalogo-hero {
   background: $verde;
   color: #fff;
-  padding: 36px 40px 56px;
+  padding: 36px 40px;
+  min-height: 184px;
+  box-sizing: border-box;
 
   .hero-inner {
     max-width: 1200px;

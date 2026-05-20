@@ -1,0 +1,305 @@
+@use "sass:color";
+$verde:     #6fb07f;
+$verde-cl:  #4caf50;
+$verde-bg:  #e8f5e9;
+$bg:        #f4f6f4;
+$card:      #ffffff;
+$border:    #e0e0e0;
+$txt:       #1a1a1a;
+$txt-light: #777;
+$radius:    16px;
+
+.carrito-page {
+  background: $bg;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+// ── Hero ─────────────────────────────────────────────
+.hero {
+  background: $verde;
+  color: #fff;
+  padding: 32px 40px;
+  min-height: 184px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+
+  &-inner {
+    max-width: 1010px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+}
+
+.eyebrow {
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .15em;
+  opacity: .65;
+  margin: 0 0 6px;
+}
+
+h1 { font-size: 2rem; font-weight: 900; margin: 0 0 6px; }
+.sub { font-size: .9rem; opacity: .8; margin: 0; }
+
+.btn-outline-white {
+  background: rgba(255,255,255,.15);
+  border: 1.5px solid rgba(255,255,255,.4);
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all .2s;
+  &:hover { background: rgba(255,255,255,.25); }
+}
+
+// ── Body ─────────────────────────────────────────────
+.carrito-body {
+  max-width: 1010px;
+  margin: 28px auto 0;
+  padding: 0 24px;
+}
+
+// ── Confirmado ────────────────────────────────────────
+.confirmado-card {
+  background: $card;
+  border-radius: 24px;
+  padding: 60px 40px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,.07);
+
+  .confirmado-ico { font-size: 4rem; display: block; margin-bottom: 16px; }
+  h2 { font-size: 1.5rem; font-weight: 800; margin: 0 0 10px; }
+  p  { color: $txt-light; font-size: .92rem; margin: 0 0 24px; line-height: 1.6; }
+}
+
+// ── Vacío ─────────────────────────────────────────────
+.vacio-card {
+  background: $card;
+  border-radius: 24px;
+  padding: 60px 40px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,.07);
+
+  span { font-size: 4rem; display: block; margin-bottom: 16px; }
+  h2   { font-size: 1.3rem; font-weight: 800; margin: 0 0 8px; }
+  p    { color: $txt-light; font-size: .9rem; margin: 0 0 24px; }
+}
+
+// ── Layout ────────────────────────────────────────────
+.carrito-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  align-items: start;
+}
+
+// ── Items ─────────────────────────────────────────────
+.carrito-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.negocio-grupo {
+  background: $card;
+  border-radius: $radius;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+
+.grupo-header {
+  background: $verde-bg;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .9rem;
+
+  strong { flex: 1; font-weight: 700; color: $verde; }
+  .subtotal { font-weight: 800; color: $verde; }
+}
+
+.item-row {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #f5f5f5;
+  &:last-child { border-bottom: none; }
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  strong { font-size: .9rem; color: $txt; }
+  span   { font-size: .78rem; color: $txt-light; }
+}
+
+.item-acciones {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  input {
+    width: 52px;
+    border: 1.5px solid $border;
+    border-radius: 8px;
+    padding: 6px 8px;
+    text-align: center;
+    font-size: .88rem;
+    font-weight: 700;
+    outline: none;
+    &:focus { border-color: $verde-cl; }
+  }
+
+  .item-total {
+    font-size: .9rem;
+    font-weight: 800;
+    color: $verde;
+    min-width: 70px;
+    text-align: right;
+  }
+}
+
+.btn-eliminar {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  opacity: .6;
+  transition: opacity .2s;
+  &:hover { opacity: 1; }
+}
+
+.btn-limpiar {
+  background: none;
+  border: 1.5px solid #ffcdd2;
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: #c62828;
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  align-self: flex-start;
+  &:hover { background: #ffebee; }
+}
+
+// ── Resumen ───────────────────────────────────────────
+.resumen-card {
+  background: $card;
+  border-radius: $radius;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+  position: sticky;
+  top: 80px;
+
+  h3 { font-size: 1rem; font-weight: 800; margin: 0 0 20px; }
+}
+
+.resumen-linea {
+  display: flex;
+  justify-content: space-between;
+  font-size: .88rem;
+  color: $txt-light;
+  padding: 6px 0;
+  border-bottom: 1px solid #f5f5f5;
+
+  &.envio { color: $txt; font-style: italic; }
+}
+
+.resumen-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0 20px;
+  font-size: .92rem;
+  color: $txt;
+
+  strong { font-size: 1.3rem; font-weight: 800; color: $verde; }
+}
+
+.direccion-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+
+  label {
+    font-size: .72rem;
+    font-weight: 700;
+    color: $txt-light;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+  }
+
+  input {
+    border: 1.5px solid $border;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: .9rem;
+    outline: none;
+    transition: border .2s;
+    &:focus { border-color: $verde-cl; }
+    &::placeholder { color: #bbb; }
+  }
+}
+
+.btn-confirmar {
+  width: 100%;
+  background: $verde;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all .2s;
+  &:hover { background: color.adjust($verde, $lightness: -6%); }
+  &:disabled { opacity: .5; cursor: not-allowed; }
+}
+
+.resumen-nota {
+  font-size: .75rem;
+  color: $txt-light;
+  text-align: center;
+  margin: 12px 0 0;
+  line-height: 1.5;
+}
+
+.error-msg {
+  background: #ffebee;
+  color: #c62828;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: .82rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+// ── Shared ────────────────────────────────────────────
+.btn-green {
+  background: $verde;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 28px;
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  &:hover { background: darken($verde, 6%); }
+}
